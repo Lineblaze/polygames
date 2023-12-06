@@ -1,7 +1,7 @@
 CREATE TABLE IF NOT EXISTS users
 (
     id            bigserial primary key,
-    name          text not null,
+    username      text not null,
     password      text not null,
     email         text,
     gender        int not null,

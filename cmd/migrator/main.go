@@ -10,7 +10,7 @@ import (
 )
 
 func main() {
-	db, err := sql.Open("postgres", "postgres://user:password@localhost:5432/yourdb?sslmode=disable")
+	db, err := sql.Open("postgres", "postgres://postgres:963852741@localhost:5432/polygames?sslmode=disable")
 	if err != nil {
 		panic(err)
 	}
@@ -21,7 +21,7 @@ func main() {
 	}
 
 	m, err := migrate.NewWithDatabaseInstance(
-		"file://path/to/your/migrations",
+		"file://migrations",
 		"postgres", driver,
 	)
 	if err != nil {
