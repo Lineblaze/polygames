@@ -21,7 +21,7 @@ type TeamRepository interface {
 	GetTeams(ctx context.Context) ([]domain.Team, error)
 	CreateTeam(ctx context.Context, team *domain.Team) (int32, error)
 	UpdateTeam(ctx context.Context, team *domain.Team) error
-	SetTeamImageID(ctx context.Context, teamID int32, imageID string) error
+	SetTeamImage(ctx context.Context, teamID int32, imageID string) error
 	DisableTeam(ctx context.Context, teamID int32) error
 	EnableTeam(ctx context.Context, teamID int32) error
 	CheckTeamUniqueness(ctx context.Context, title string) (*domain.Team, error)
@@ -143,7 +143,7 @@ func (s *TeamService) SetTeamImage(ctx context.Context, teamID int32, img []byte
 		return fmt.Errorf("getting team %d: %w", teamID, err)
 	}
 
-	err = s.repo.SetTeamImageID(ctx, teamID, fileName)
+	err = s.repo.SetTeamImage(ctx, teamID, fileName)
 	if err != nil {
 		return fmt.Errorf("setting team %d image: %w", teamID, err)
 	}

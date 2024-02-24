@@ -20,7 +20,7 @@ type TeamService interface {
 	GetTeams(ctx context.Context) ([]domain.Team, error)
 	CreateTeam(ctx context.Context, team *domain.Team) (*domain.Team, error)
 	UpdateTeam(ctx context.Context, team *domain.Team) (*domain.Team, error)
-	SetTeamImage(ctx context.Context, teamID int32, img []byte) error
+	SetTeamImageID(ctx context.Context, teamID int32, img []byte) error
 	GetTeamImage(ctx context.Context, teamID int32) (*domain.Team, error)
 	DisableTeam(ctx context.Context, teamID int32) error
 	EnableTeam(ctx context.Context, teamID int32) error
@@ -132,7 +132,7 @@ func (h *teamHandler) updateTeam(w http.ResponseWriter, r *http.Request) {
 	httphelp.SendJSON(http.StatusOK, response, w)
 }
 
-// setTeamImage godoc
+// setTeamImageID godoc
 // @Summary      Set team image
 // @Description  Updated team image. Accepts `multipart/form-data`.
 // @Description
@@ -146,7 +146,7 @@ func (h *teamHandler) updateTeam(w http.ResponseWriter, r *http.Request) {
 // @Failure      404  {object}  Error
 // @Failure      500  {object}  Error
 // @Router       /api/v1/teams/{team_id}/image [post]
-func (h *teamHandler) setTeamImage(w http.ResponseWriter, r *http.Request) {
+func (h *teamHandler) setTeamImageID(w http.ResponseWriter, r *http.Request) {
 	tid := httphelp.ParseParamInt32("team_id", r)
 
 	file, _, err := r.FormFile("file")
@@ -167,7 +167,7 @@ func (h *teamHandler) setTeamImage(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	err = h.teamService.SetTeamImage(r.Context(), tid, content)
+	err = h.teamService.SetTeamImageID(r.Context(), tid, content)
 	if err != nil {
 		httphelp.SendError(fmt.Errorf("setting team image: %w", err), w)
 		return

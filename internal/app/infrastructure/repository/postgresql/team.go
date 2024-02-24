@@ -42,8 +42,6 @@ func (r *TeamRepository) GetTeam(ctx context.Context, id int32) (*domain.Team, e
 		return nil, fmt.Errorf("scanning team: %w", err)
 	}
 
-	team.HasImage = team.ImageID != ""
-
 	return &team, nil
 }
 
@@ -75,8 +73,6 @@ func (r *TeamRepository) GetTeams(ctx context.Context) ([]domain.Team, error) {
 			return nil, fmt.Errorf("scanning team: %w", err)
 		}
 
-		team.HasImage = team.ImageID != ""
-
 		teams = append(teams, team)
 	}
 
@@ -88,8 +84,11 @@ func (r *TeamRepository) CreateTeam(ctx context.Context, team *domain.Team) (int
 
 	err := r.pool.QueryRow(ctx, `
 		INSERT INTO teams(title, description, image_id)
-		VALUES ($1, $2, '')
-		RETURNING id`, team.Title, team.Description).Scan(&id)
+		VALUES ($1, $2, $3)
+		RETURNING id`,
+		team.Title,
+		team.Description,
+	).Scan(&id)
 	if err != nil {
 		return 0, fmt.Errorf("inserting team: %w", err)
 	}
@@ -113,7 +112,7 @@ func (r *TeamRepository) UpdateTeam(ctx context.Context, team *domain.Team) erro
 	return nil
 }
 
-func (r *TeamRepository) SetTeamImageID(ctx context.Context, teamID int32, imageID string) error {
+func (r *TeamRepository) SetTeamImage(ctx context.Context, teamID int32, imageID string) error {
 	_, err := r.pool.Exec(ctx, `
 		UPDATE teams
 		SET image_id=$2, updated_at=now()

@@ -50,32 +50,18 @@ func (mr *MockGameServiceMockRecorder) CreateGame(ctx, game interface{}) *gomock
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateGame", reflect.TypeOf((*MockGameService)(nil).CreateGame), ctx, game)
 }
 
-// DisableGame mocks base method.
-func (m *MockGameService) DisableGame(ctx context.Context, gameID int32) error {
+// DeleteGame mocks base method.
+func (m *MockGameService) DeleteGame(ctx context.Context, id int32) error {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "DisableGame", ctx, gameID)
+	ret := m.ctrl.Call(m, "DeleteGame", ctx, id)
 	ret0, _ := ret[0].(error)
 	return ret0
 }
 
-// DisableGame indicates an expected call of DisableGame.
-func (mr *MockGameServiceMockRecorder) DisableGame(ctx, gameID interface{}) *gomock.Call {
+// DeleteGame indicates an expected call of DeleteGame.
+func (mr *MockGameServiceMockRecorder) DeleteGame(ctx, id interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DisableGame", reflect.TypeOf((*MockGameService)(nil).DisableGame), ctx, gameID)
-}
-
-// EnableGame mocks base method.
-func (m *MockGameService) EnableGame(ctx context.Context, gameID int32) error {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "EnableGame", ctx, gameID)
-	ret0, _ := ret[0].(error)
-	return ret0
-}
-
-// EnableGame indicates an expected call of EnableGame.
-func (mr *MockGameServiceMockRecorder) EnableGame(ctx, gameID interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "EnableGame", reflect.TypeOf((*MockGameService)(nil).EnableGame), ctx, gameID)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteGame", reflect.TypeOf((*MockGameService)(nil).DeleteGame), ctx, id)
 }
 
 // GetGame mocks base method.
@@ -91,6 +77,21 @@ func (m *MockGameService) GetGame(ctx context.Context, id int32) (*domain.Game, 
 func (mr *MockGameServiceMockRecorder) GetGame(ctx, id interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetGame", reflect.TypeOf((*MockGameService)(nil).GetGame), ctx, id)
+}
+
+// GetGameFile mocks base method.
+func (m *MockGameService) GetGameFile(ctx context.Context, gameID int32) (*domain.Game, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetGameFile", ctx, gameID)
+	ret0, _ := ret[0].(*domain.Game)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetGameFile indicates an expected call of GetGameFile.
+func (mr *MockGameServiceMockRecorder) GetGameFile(ctx, gameID interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetGameFile", reflect.TypeOf((*MockGameService)(nil).GetGameFile), ctx, gameID)
 }
 
 // GetGameImage mocks base method.
@@ -121,6 +122,20 @@ func (m *MockGameService) GetGames(ctx context.Context) ([]domain.Game, error) {
 func (mr *MockGameServiceMockRecorder) GetGames(ctx interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetGames", reflect.TypeOf((*MockGameService)(nil).GetGames), ctx)
+}
+
+// SetGameFile mocks base method.
+func (m *MockGameService) SetGameFile(ctx context.Context, gameID int32, file []byte) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "SetGameFile", ctx, gameID, file)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// SetGameFile indicates an expected call of SetGameFile.
+func (mr *MockGameServiceMockRecorder) SetGameFile(ctx, gameID, file interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "SetGameFile", reflect.TypeOf((*MockGameService)(nil).SetGameFile), ctx, gameID, file)
 }
 
 // SetGameImage mocks base method.

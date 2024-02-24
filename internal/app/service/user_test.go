@@ -343,8 +343,6 @@ func TestUserService_GetUsers(t *testing.T) {
 	}
 
 	for _, tc := range tests {
-		tc := tc
-
 		t.Run(tc.name, func(t *testing.T) {
 			tc.mock()
 
@@ -473,8 +471,6 @@ func TestUserService_UpdateUser(t *testing.T) {
 	}
 
 	for _, tc := range tests {
-		tc := tc
-
 		t.Run(tc.name, func(t *testing.T) {
 			tc.mock(tc.user)
 
@@ -565,8 +561,6 @@ func TestUserService_GetUserImage(t *testing.T) {
 	}
 
 	for _, tc := range tests {
-		tc := tc
-
 		t.Run(tc.name, func(t *testing.T) {
 			tc.mock(tc.id)
 
@@ -648,8 +642,6 @@ func TestUserService_RemoveUser(t *testing.T) {
 	}
 
 	for _, tc := range tests {
-		tc := tc
-
 		t.Run(tc.name, func(t *testing.T) {
 			tc.mock(tc.id)
 

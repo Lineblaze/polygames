@@ -22,8 +22,9 @@ type GameService interface {
 	UpdateGame(ctx context.Context, game *domain.Game) (*domain.Game, error)
 	SetGameImage(ctx context.Context, gameID int32, img []byte) error
 	GetGameImage(ctx context.Context, gameID int32) (*domain.Game, error)
-	DisableGame(ctx context.Context, gameID int32) error
-	EnableGame(ctx context.Context, gameID int32) error
+	SetGameFile(ctx context.Context, gameID int32, file []byte) error
+	GetGameFile(ctx context.Context, gameID int32) (*domain.Game, error)
+	DeleteGame(ctx context.Context, id int32) error
 }
 
 type GameHandler struct {
@@ -108,7 +109,7 @@ func (h *GameHandler) createGame(w http.ResponseWriter, r *http.Request) {
 // @Tags         Games
 // @Accept       json
 // @Produce      json
-// @Param        game_id path int true "game identifier."
+// @Param        game_id path int true "Game identifier."
 // @Param        request body dto.UpdateGameRequest true "Request body."
 // @Success      200  {object}	domain.Game
 // @Failure      404  {object}  Error
@@ -181,7 +182,7 @@ func (h *GameHandler) setGameImage(w http.ResponseWriter, r *http.Request) {
 // @Description  Returns game image.
 // @Tags         Games
 // @Produce      octet-stream
-// @Param        game_id path int true "game identifier."
+// @Param        game_id path int true "Game identifier."
 // @Success      200
 // @Failure      404  {object}  Error
 // @Failure      500  {object}  Error
@@ -195,47 +196,93 @@ func (h *GameHandler) getGameImage(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	fileName := fmt.Sprintf("%s.%s", response.Name, filepath.Ext(response.ImageID))
+	fileName := fmt.Sprintf("%s.%s", response.Title, filepath.Ext(response.ImageID))
 
 	http.ServeContent(w, r, fileName, response.UpdatedAt, bytes.NewReader(response.ImageContent))
 }
 
-// disableGame godoc
-// @Summary      Disable game
-// @Description  Disables a game.
+// setGameFile godoc
+// @Summary      Set game file
+// @Description  Updated game file. Accepts `multipart/form-data`.
+// @Description
+// @Description  Note: if a game already has an file, it will be deleted automatically on success.
 // @Tags         Games
-// @Param        game_id path int true "game identifier."
+// @Accept       mpfd
+// @Param        game_id path int true "Game identifier."
 // @Success      200
+// @Failure      400  {object}  Error
 // @Failure      404  {object}  Error
 // @Failure      500  {object}  Error
-// @Router       /api/v1/games/{game_id}/disable [post]
-func (h *GameHandler) disableGame(w http.ResponseWriter, r *http.Request) {
+// @Router       /api/v1/games/{game_id}/file [post]
+func (h *GameHandler) setGameFile(w http.ResponseWriter, r *http.Request) {
 	tid := httphelp.ParseParamInt32("game_id", r)
 
-	err := h.GameService.DisableGame(r.Context(), tid)
+	file, _, err := r.FormFile("file")
 	if err != nil {
-		httphelp.SendError(fmt.Errorf("disabling game: %w", err), w)
+		if errors.Is(err, http.ErrMissingFile) {
+			// TODO: custom http error
+			httphelp.SendError(fmt.Errorf("file is not presented"), w)
+			return
+		}
+		httphelp.SendError(fmt.Errorf("parsing form file: %w", err), w)
+		return
+	}
+	defer file.Close()
+
+	content, err := io.ReadAll(file)
+	if err != nil {
+		httphelp.SendError(fmt.Errorf("reading file: %w", err), w)
+		return
+	}
+
+	err = h.GameService.SetGameFile(r.Context(), tid, content)
+	if err != nil {
+		httphelp.SendError(fmt.Errorf("setting game file: %w", err), w)
 		return
 	}
 
 	w.WriteHeader(http.StatusOK)
 }
 
-// enableGame godoc
-// @Summary      Enable game
-// @Description  Enables a game.
+// getGameFile godoc
+// @Summary      Get game file content
+// @Description  Returns game file.
 // @Tags         Games
-// @Param        Game_id path int true "game identifier."
+// @Produce      octet-stream
+// @Param        game_id path int true "Game identifier."
 // @Success      200
 // @Failure      404  {object}  Error
 // @Failure      500  {object}  Error
-// @Router       /api/v1/games/{game_id}/enable [post]
-func (h *GameHandler) enableGame(w http.ResponseWriter, r *http.Request) {
+// @Router       /api/v1/games/{game_id}/file [get]
+func (h *GameHandler) getGameFile(w http.ResponseWriter, r *http.Request) {
 	tid := httphelp.ParseParamInt32("game_id", r)
 
-	err := h.GameService.EnableGame(r.Context(), tid)
+	response, err := h.GameService.GetGameFile(r.Context(), tid)
 	if err != nil {
-		httphelp.SendError(fmt.Errorf("enabling game: %w", err), w)
+		httphelp.SendError(fmt.Errorf("getting game file: %w", err), w)
+		return
+	}
+
+	fileName := fmt.Sprintf("%s.%s", response.Title, filepath.Ext(response.ImageID))
+
+	http.ServeContent(w, r, fileName, response.UpdatedAt, bytes.NewReader(response.ImageContent))
+}
+
+// deleteGame godoc
+// @Summary      Delete game
+// @Description  Marks game as inactive.
+// @Tags         Games
+// @Param        game_id path int true "Game identifier."
+// @Success      200  {object}	nil
+// @Failure      404  {object}  Error
+// @Failure      500  {object}  Error
+// @Router       /api/v1/games/{game_id} [delete]
+func (h *GameHandler) deleteGame(w http.ResponseWriter, r *http.Request) {
+	gameID := httphelp.ParseParamInt32("game_id", r)
+
+	err := h.GameService.DeleteGame(r.Context(), gameID)
+	if err != nil {
+		httphelp.SendError(err, w)
 		return
 	}
 

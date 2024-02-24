@@ -61,6 +61,7 @@ func Run(configPath string) error {
 
 	// Repositories initialization
 	userRepo := postgresql.NewUserRepository(pg.Pool)
+	gameRepo := postgresql.NewGameRepository(pg.Pool)
 	teamRepo := postgresql.NewTeamRepository(pg.Pool)
 
 	// FS storage initialization
@@ -72,12 +73,14 @@ func Run(configPath string) error {
 	// Services initialization
 	userService := service.NewUserService(userRepo, filesFS)
 	authService := service.NewAuthService(userRepo)
+	gameService := service.NewGameService(gameRepo, filesFS)
 	teamService := service.NewTeamService(teamRepo, filesFS)
 
 	// Handler initialization
 	handler := http.NewHandler(
 		userService,
 		authService,
+		gameService,
 		teamService,
 	)
 

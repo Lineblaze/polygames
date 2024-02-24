@@ -6,12 +6,20 @@ import (
 
 type (
 	CreateGameRequest struct {
-		Name        string `json:"name"`
+		Title       string `json:"name"`
 		Description string `json:"description"`
+		UserID      int32  `json:"userID"`
+		TeamID      int32  `json:"teamID"`
+		GenreID     int32  `json:"genreID"`
+		Link        string `json:"link,omitempty"`
 	}
 	UpdateGameRequest struct {
-		Name        string `json:"name"`
+		Title       string `json:"name"`
 		Description string `json:"description"`
+		UserID      int32  `json:"userID"`
+		TeamID      int32  `json:"teamID"`
+		GenreID     int32  `json:"genreID"`
+		Link        string `json:"link,omitempty"`
 	}
 )
 
@@ -21,7 +29,7 @@ func (r *CreateGameRequest) ToDomain() *domain.Game {
 	}
 
 	return &domain.Game{
-		Name:        r.Name,
+		Title:       r.Title,
 		Description: r.Description,
 	}
 }
@@ -33,7 +41,7 @@ func (r *UpdateGameRequest) ToDomain(gameID int32) *domain.Game {
 
 	return &domain.Game{
 		ID:          gameID,
-		Name:        r.Name,
+		Title:       r.Title,
 		Description: r.Description,
 	}
 }

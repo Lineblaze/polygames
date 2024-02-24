@@ -12,7 +12,6 @@ type (
 		ID          int32      `json:"id"`
 		Title       string     `json:"title"`
 		Description string     `json:"description"`
-		HasImage    bool       `json:"hasImage"`
 		CreatedAt   time.Time  `json:"createdAt"`
 		UpdatedAt   time.Time  `json:"updatedAt"`
 		DisabledAt  *time.Time `json:"disabledAt,omitempty"`

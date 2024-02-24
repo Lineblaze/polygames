@@ -118,7 +118,7 @@ func (r *UserRepository) CreateUser(ctx context.Context, user *domain.User) (int
 
 	err := r.pool.QueryRow(ctx,
 		`INSERT INTO users(name, surname, username, email, encoded_password, salt, role, image_id)
-		 VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9)
+		 VALUES($1, $2, $3, $4, $5, $6, $7, $8)
 		 RETURNING  id`,
 		user.Name,
 		user.Surname,

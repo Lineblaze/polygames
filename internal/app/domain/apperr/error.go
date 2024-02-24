@@ -50,11 +50,11 @@ func NewValidationError(verrors []ValidationError, field string) error {
 }
 
 func NewInvalidRequest(msg, field string) error {
-	return New(InvalidRequestType, msg, field)
+	return New(InvalidRequestType, "Invalid Request", field)
 }
 
 func NewNotFound(field string) error {
-	return New(NotFoundType, "Object not found.", field)
+	return New(NotFoundType, "Not found", field)
 }
 
 func NewUnauthorized(msg string) error {
@@ -70,7 +70,7 @@ func NewDisabled(msg string) error {
 }
 
 func NewDuplicate(msg, field string) error {
-	return New(DuplicateType, msg, field)
+	return New(DuplicateType, "Duplicate", field)
 }
 
 func NewInternal(msg string) error {

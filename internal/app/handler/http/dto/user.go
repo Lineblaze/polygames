@@ -18,9 +18,11 @@ type (
 	}
 
 	UpdateUserIn struct {
-		Name    string          `json:"name"`
-		Surname string          `json:"surname"`
-		Role    domain.UserRole `json:"role"`
+		Name        string          `json:"name"`
+		Surname     string          `json:"surname"`
+		Gender      domain.Gender   `json:"gender"`
+		Role        domain.UserRole `json:"role"`
+		DateOfBirth time.Time       `json:"dateOfBirth"`
 	}
 )
 
@@ -35,7 +37,9 @@ func (in *CreateUserIn) ToDomain() *domain.User {
 		Username:        in.Username,
 		Email:           in.Email,
 		EncodedPassword: in.Password,
+		Gender:          in.Gender,
 		Role:            in.Role,
+		DateOfBirth:     in.DateOfBirth,
 	}
 }
 
@@ -45,9 +49,11 @@ func (in *UpdateUserIn) ToDomain(userID int32) *domain.User {
 	}
 
 	return &domain.User{
-		ID:      userID,
-		Name:    in.Name,
-		Surname: in.Surname,
-		Role:    in.Role,
+		ID:          userID,
+		Name:        in.Name,
+		Surname:     in.Surname,
+		Gender:      in.Gender,
+		Role:        in.Role,
+		DateOfBirth: in.DateOfBirth,
 	}
 }

@@ -123,18 +123,18 @@ func (mr *MockTeamRepositoryMockRecorder) GetTeams(ctx interface{}) *gomock.Call
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetTeams", reflect.TypeOf((*MockTeamRepository)(nil).GetTeams), ctx)
 }
 
-// SetTeamImageID mocks base method.
-func (m *MockTeamRepository) SetTeamImageID(ctx context.Context, teamID int32, imageID string) error {
+// SetTeamImage mocks base method.
+func (m *MockTeamRepository) SetTeamImage(ctx context.Context, teamID int32, imageID string) error {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "SetTeamImageID", ctx, teamID, imageID)
+	ret := m.ctrl.Call(m, "SetTeamImage", ctx, teamID, imageID)
 	ret0, _ := ret[0].(error)
 	return ret0
 }
 
-// SetTeamImageID indicates an expected call of SetTeamImageID.
-func (mr *MockTeamRepositoryMockRecorder) SetTeamImageID(ctx, teamID, imageID interface{}) *gomock.Call {
+// SetTeamImage indicates an expected call of SetTeamImage.
+func (mr *MockTeamRepositoryMockRecorder) SetTeamImage(ctx, teamID, imageID interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "SetTeamImageID", reflect.TypeOf((*MockTeamRepository)(nil).SetTeamImageID), ctx, teamID, imageID)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "SetTeamImage", reflect.TypeOf((*MockTeamRepository)(nil).SetTeamImage), ctx, teamID, imageID)
 }
 
 // UpdateTeam mocks base method.
