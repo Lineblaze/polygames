@@ -34,7 +34,7 @@ var (
 	cfg  Config
 	once sync.Once
 
-	k     = "82668872b5ff51b0b23608d17cce08bd23f52ae2146d6bbf54"
+	k     = "6368616e676520746869732070617373776f726420746f206120736563726574"
 	Block cipher.Block // Block is needed to encode/decode sensitive data.
 )
 

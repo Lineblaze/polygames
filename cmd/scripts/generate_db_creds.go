@@ -9,7 +9,7 @@ import (
 func main() {
 	config.Read("./config.yml")
 
-	username, password, err := wcrypto.EncodeUserPass("webstudio", "webstudio", config.Block)
+	username, password, err := wcrypto.EncodeUserPass("polygames", "polygames", config.Block)
 	if err != nil {
 		panic(err)
 	}
